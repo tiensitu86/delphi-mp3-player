@@ -1,4 +1,4 @@
-#summary Links to related articles and resources
+#summary links to related articles and resources
 
 Your first MP3 Delphi player
  * [http://delphi.about.com/od/multimedia/l/aa112800a.htm Part 1: Delphi plays MP3? TMediaPlayer is all we need!]
