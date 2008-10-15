@@ -1,7 +1,15 @@
 #summary links to related articles and resources
 
+= Articles =
+
 Your first MP3 Delphi player
  * [http://delphi.about.com/od/multimedia/l/aa112800a.htm Part 1: Delphi plays MP3? TMediaPlayer is all we need!]
  * [http://delphi.about.com/od/multimedia/l/aa112800b.htm Part 2: Building a MP3 player Delphi Project's GUI]
  * [http://delphi.about.com/od/multimedia/l/aa112800c.htm Part 3: Building a MP3 player Delphi Project's Code]
  * [http://delphi.about.com/library/code/ncaa112800a.htm Code]
+
+= Components =
+
+ * Zeos
+   * [http://zeos.firmos.at/portal.php ZeosLib Portal]
+   * [http://sourceforge.net/projects/zeoslib ZeosLib SourceForge]
