@@ -10,6 +10,7 @@ Your first MP3 Delphi player
 
 == Components ==
 
- * Zeos
+ * Database
+   * [http://www.sqlite.org/ SQLite]
    * [http://zeos.firmos.at/portal.php ZeosLib Portal]
    * [http://sourceforge.net/projects/zeoslib ZeosLib SourceForge]
