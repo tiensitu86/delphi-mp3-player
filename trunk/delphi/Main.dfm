@@ -54,7 +54,7 @@ object frmMain: TfrmMain
     Top = -1
     Width = 142
     Height = 19
-    Ctl3D = True
+    Ctl3D = False
     ParentCtl3D = False
     TabOrder = 2
     TickStyle = tsNone

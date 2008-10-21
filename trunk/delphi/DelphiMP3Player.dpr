@@ -5,7 +5,8 @@ uses
   Main in 'Main.pas' {frmMain},
   Folders in 'Folders.pas' {frmFolders},
   Update in 'Update.pas' {frmUpdate},
-  FileSearch in 'FileSearch.pas';
+  FileSearch in 'FileSearch.pas',
+  MP3Utils in 'MP3Utils.pas';
 
 {$R *.res}
 
