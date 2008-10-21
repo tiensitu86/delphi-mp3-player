@@ -2,6 +2,7 @@ create table artist(
   id   integer primary key,
   name varchar(50)
 );
+create unique index artist_name_index on artist(name);
 
 create table album(
   id        integer primary key,
@@ -24,6 +25,7 @@ create table file(
   id_artist integer,
   id_album  integer
 );
+create unique index file_path_index on file(path);
 
 create table playlist(
   id   integer primary key,
