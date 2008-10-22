@@ -2,8 +2,8 @@ object frmUpdate: TfrmUpdate
   Left = 0
   Top = 0
   Caption = 'Update Database'
-  ClientHeight = 352
-  ClientWidth = 605
+  ClientHeight = 371
+  ClientWidth = 590
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,21 +13,25 @@ object frmUpdate: TfrmUpdate
   OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  DesignSize = (
-    605
-    352)
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
-    Left = 12
-    Top = 131
+    Left = 8
+    Top = 165
     Width = 45
     Height = 13
     Caption = 'New Files'
   end
+  object Label2: TLabel
+    Left = 8
+    Top = 4
+    Width = 30
+    Height = 13
+    Caption = 'Folder'
+  end
   object Button1: TButton
-    Left = 12
-    Top = 12
+    Left = 8
+    Top = 51
     Width = 81
     Height = 25
     Caption = 'Start Update'
@@ -35,29 +39,29 @@ object frmUpdate: TfrmUpdate
     OnClick = Button1Click
   end
   object Memo1: TMemo
-    Left = 12
-    Top = 43
-    Width = 578
-    Height = 82
-    Anchors = [akLeft, akTop, akRight]
+    Left = 8
+    Top = 82
+    Width = 573
+    Height = 77
     TabOrder = 1
-    ExplicitWidth = 516
   end
   object DBGrid1: TDBGrid
-    Left = 12
-    Top = 150
-    Width = 578
-    Height = 171
-    Anchors = [akLeft, akTop, akRight, akBottom]
+    Left = 8
+    Top = 180
+    Width = 573
+    Height = 181
     Ctl3D = False
     DataSource = DataSource1
+    Options = [dgEditing, dgAlwaysShowEditor, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
     ParentCtl3D = False
+    PopupMenu = PopupMenu1
     TabOrder = 2
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+    OnEditButtonClick = DBGrid1EditButtonClick
     Columns = <
       item
         Expanded = False
@@ -78,6 +82,7 @@ object frmUpdate: TfrmUpdate
         Visible = True
       end
       item
+        ButtonStyle = cbsEllipsis
         Expanded = False
         FieldName = 'Album'
         Width = 120
@@ -95,29 +100,44 @@ object frmUpdate: TfrmUpdate
       end>
   end
   object ProgressBar1: TProgressBar
-    Left = 104
-    Top = 12
-    Width = 209
+    Left = 100
+    Top = 51
+    Width = 221
     Height = 25
     Step = 1
     TabOrder = 3
   end
-  object qryFolders: TZReadOnlyQuery
+  object Edit1: TEdit
+    Left = 8
+    Top = 17
+    Width = 313
+    Height = 21
+    TabOrder = 4
+    Text = 'Edit1'
+  end
+  object CheckBox1: TCheckBox
+    Left = 332
+    Top = 19
+    Width = 97
+    Height = 17
+    Caption = 'Recursive'
+    Checked = True
+    State = cbChecked
+    TabOrder = 5
+  end
+  object qryOptions: TZReadOnlyQuery
     Connection = frmMain.ZConnection1
     SQL.Strings = (
-      'select * from folder order by path')
+      'select * from options')
     Params = <>
-    Left = 156
-    Top = 64
-    object qryFoldersid: TIntegerField
+    Left = 152
+    Top = 98
+    object qryOptionsid: TIntegerField
       FieldName = 'id'
     end
-    object qryFolderspath: TStringField
-      FieldName = 'path'
+    object qryOptionsstart_path: TStringField
+      FieldName = 'start_path'
       Size = 400
-    end
-    object qryFoldersrecursive: TBooleanField
-      FieldName = 'recursive'
     end
   end
   object ClientDataSet1: TClientDataSet
@@ -155,8 +175,8 @@ object frmUpdate: TfrmUpdate
     IndexDefs = <>
     Params = <>
     StoreDefs = True
-    Left = 156
-    Top = 180
+    Left = 152
+    Top = 208
     Data = {
       9D0000009619E0BD0100000018000000060000000000030000009D000446696C
       650200490000000100055749445448020002009001055469746C650100490000
@@ -189,7 +209,34 @@ object frmUpdate: TfrmUpdate
   end
   object DataSource1: TDataSource
     DataSet = ClientDataSet1
-    Left = 156
-    Top = 236
+    Left = 152
+    Top = 264
+  end
+  object qryArtist: TZQuery
+    Connection = frmMain.ZConnection1
+    SQL.Strings = (
+      'select * from artist order by name')
+    Params = <>
+    Left = 296
+    Top = 96
+    object qryArtistid: TIntegerField
+      FieldName = 'id'
+    end
+    object qryArtistname: TStringField
+      FieldName = 'name'
+      Size = 50
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 260
+    Top = 264
+    object S1: TMenuItem
+      Caption = 'Same Artist and Album'
+      OnClick = S1Click
+    end
+    object rytogettitle1: TMenuItem
+      Caption = 'Try to get title from file name'
+      OnClick = rytogettitle1Click
+    end
   end
 end

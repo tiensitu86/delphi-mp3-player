@@ -10,7 +10,7 @@ type
   TfrmMain = class(TForm)
     MainMenu1: TMainMenu;
     File1: TMenuItem;
-    Folders1: TMenuItem;
+    Options1: TMenuItem;
     ZConnection1: TZConnection;
     UpdateFolders1: TMenuItem;
     MediaPlayer1: TMediaPlayer;
@@ -19,13 +19,15 @@ type
     OpenDialog1: TOpenDialog;
     TrackBar1: TTrackBar;
     Timer1: TTimer;
+    N1: TMenuItem;
     procedure FormCreate(Sender: TObject);
-    procedure Folders1Click(Sender: TObject);
     procedure UpdateFolders1Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure ListBox1DblClick(Sender: TObject);
     procedure MediaPlayer1Notify(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
+    procedure Options1Click(Sender: TObject);
+    procedure ZConnection1BeforeConnect(Sender: TObject);
   private
     { Private declarations }
   public
@@ -37,16 +39,25 @@ var
 
 implementation
 
-uses Folders, Update;
+uses Update, Options;
 
 {$R *.dfm}
+
+procedure TfrmMain.Options1Click(Sender: TObject);
+begin
+  frmOptions.Show;
+end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   Top := 0;
   Left := 0;
-  ZConnection1.Database := ExtractFilePath(Application.ExeName) + 'mp3.db';
   ZConnection1.Connected := True;
+end;
+
+procedure TfrmMain.ZConnection1BeforeConnect(Sender: TObject);
+begin
+  ZConnection1.Database := ExtractFilePath(Application.ExeName) + 'mp3.db';
 end;
 
 procedure TfrmMain.ListBox1DblClick(Sender: TObject);
@@ -102,11 +113,6 @@ procedure TfrmMain.Timer1Timer(Sender: TObject);
 begin
   if TrackBar1.Max > 0 then
     TrackBar1.Position := MediaPlayer1.Position;
-end;
-
-procedure TfrmMain.Folders1Click(Sender: TObject);
-begin
-  frmFolders.Show;
 end;
 
 procedure TfrmMain.UpdateFolders1Click(Sender: TObject);
