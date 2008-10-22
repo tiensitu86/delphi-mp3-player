@@ -64,19 +64,23 @@ object frmMain: TfrmMain
     Top = 52
     object File1: TMenuItem
       Caption = 'File'
-      object Folders1: TMenuItem
-        Caption = 'Folders...'
-        OnClick = Folders1Click
-      end
       object UpdateFolders1: TMenuItem
         Caption = 'Update database...'
         OnClick = UpdateFolders1Click
+      end
+      object N1: TMenuItem
+        Caption = '-'
+      end
+      object Options1: TMenuItem
+        Caption = 'Options...'
+        OnClick = Options1Click
       end
     end
   end
   object ZConnection1: TZConnection
     Protocol = 'sqlite-3'
     Database = 'C:\temp\01-Exe\DelphiMP3Player\mp3.db'
+    BeforeConnect = ZConnection1BeforeConnect
     Left = 124
     Top = 52
   end
