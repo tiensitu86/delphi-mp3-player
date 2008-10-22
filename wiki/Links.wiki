@@ -12,6 +12,7 @@
    * [http://www.mpgedit.org/mpgedit/mpeg_format/MP3Format.html MP3 Format]
    * [http://www.mpgedit.org/mpgedit/mpeg_format/mpeghdr.htm MPEG Format]
    * [http://www.mp3.com/ MP3.com]
+   * [http://www.id3.org/id3v2.4.0-structure ID3 tag version 2.4.0 - Main Structure]
 
 
 == Components ==
