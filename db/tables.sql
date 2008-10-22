@@ -13,12 +13,6 @@ create table album(
   foreign key (id_artist) references artist(id)
 );
 
-create table folder(
-  id        integer primary key,
-  path      varchar(400),
-  recursive boolean
-);
-
 create table file(
   id        integer primary key,
   path      varchar(400),
@@ -39,3 +33,9 @@ create table file_playlist(
   foreign key (id_file) references file(id),
   foreign key (id_playlist) references playlist(id)
 );
+
+create table options(
+  id         integer primary key,
+  start_path varchar(400)
+);
+insert into options (id, start_path) values (1, '');
