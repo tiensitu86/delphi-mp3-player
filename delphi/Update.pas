@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DB, ZAbstractRODataset, ZDataset, StdCtrls, DBClient, Grids, DBGrids,
-  ComCtrls, ZAbstractDataset, Menus;
+  ComCtrls, ZAbstractDataset, Menus, Provider;
 
 type
   TfrmUpdate = class(TForm)
@@ -28,22 +28,26 @@ type
     Label2: TLabel;
     Edit1: TEdit;
     CheckBox1: TCheckBox;
-    qryArtist: TZQuery;
-    qryArtistid: TIntegerField;
-    qryArtistname: TStringField;
     PopupMenu1: TPopupMenu;
     S1: TMenuItem;
     rytogettitle1: TMenuItem;
+    cdsFiles: TClientDataSet;
+    dspFiles: TDataSetProvider;
+    cdsFilespath: TStringField;
+    Button2: TButton;
+    qryFiles: TZQuery;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure DBGrid1EditButtonClick(Sender: TObject);
     procedure S1Click(Sender: TObject);
     procedure rytogettitle1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
   private
     FileList: TStrings;
     procedure ProcessFiles;
     procedure AppendFileToAdd(FilePath: String);
+    procedure AddNewFiles;
   end;
 
 var
@@ -51,24 +55,26 @@ var
 
 implementation
 
-uses FileSearch, Main, MP3Utils, SelectAlbum;
+uses FileSearch, Main, MP3Utils, SelectAlbum, MainDM, ArtistDM;
 
 {$R *.dfm}
 
 procedure TfrmUpdate.FormCreate(Sender: TObject);
 begin
+  UseArtistDM;
+
   qryOptions.Open;
+
   Edit1.Text := qryOptionsstart_path.Value;
   FileList := TStringList.Create;
-  Memo1.Anchors := Memo1.Anchors + [akRight];
+  //Memo1.Anchors := Memo1.Anchors + [akRight];
   DBGrid1.Anchors := DBGrid1.Anchors + [akRight, akBottom];
 
-  qryArtist.Open;
-  while not qryArtist.Eof do begin
-    DBGrid1.Columns[2].PickList.Add(qryArtistname.Value);
-    qryArtist.Next;
+  dmArtist.cdsArtists.First;
+  while not dmArtist.cdsArtists.Eof do begin
+    DBGrid1.Columns[2].PickList.Add(dmArtist.cdsArtistsname.Value);
+    dmArtist.cdsArtists.Next;
   end;
-  qryArtist.Close;
 end;
 
 procedure TfrmUpdate.FormDestroy(Sender: TObject);
@@ -82,6 +88,9 @@ begin
   Screen.Cursor := crHourGlass;
   try
     DataSource1.DataSet.DisableControls;
+    if not cdsFiles.Active then
+      cdsFiles.Open;
+
     FileList.Clear;
     Memo1.Clear;
     ClientDataSet1.EmptyDataSet;
@@ -93,6 +102,37 @@ begin
   finally
     DataSource1.DataSet.EnableControls;
     Screen.Cursor := crDefault;
+  end;
+end;
+
+// Add Files
+procedure TfrmUpdate.Button2Click(Sender: TObject);
+begin
+  Screen.Cursor := crHourGlass;
+  try
+    DataSource1.DataSet.DisableControls;
+    Memo1.Lines.Add('Adding Files...');
+    ProgressBar1.Max := ClientDataSet1.RecordCount;
+    ProgressBar1.Position := 0;
+    AddNewFiles;
+  finally
+    DataSource1.DataSet.EnableControls;
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TfrmUpdate.AddNewFiles;
+var
+  id_artist: Integer;
+begin
+  ClientDataSet1.First;
+  while not ClientDataSet1.Eof do begin
+    if Trim(ClientDataSet1Artist.Value) <> '' then begin
+      id_artist := dmArtist.ArtistGetOrAdd(ClientDataSet1Artist.Value);
+      
+    end;
+    ClientDataSet1.Next;
+    ProgressBar1.StepIt;
   end;
 end;
 
@@ -142,7 +182,8 @@ begin
   for I := 0 to FileList.Count - 1 do begin
     FilePath := FileList[I];
     // If new file
-    AppendFileToAdd(FilePath);
+    if not cdsFiles.FindKey([FilePath]) then
+      AppendFileToAdd(FilePath);
     ProgressBar1.StepIt;
   end;
 
@@ -150,6 +191,7 @@ begin
   Memo1.Lines.Add(FormatFloat(',#', ClientDataSet1.RecordCount) + ' new file(s) to add');
 
   // Check for deleted files
+
 end;
 
 // Try to get title from file name
