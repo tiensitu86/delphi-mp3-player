@@ -8,7 +8,9 @@ uses
   MP3Utils in 'MP3Utils.pas',
   ID3v2 in 'ID3v2.pas',
   Options in 'Options.pas' {frmOptions},
-  SelectAlbum in 'SelectAlbum.pas' {frmGetAlbum};
+  SelectAlbum in 'SelectAlbum.pas' {frmGetAlbum},
+  MainDM in 'MainDM.pas' {dmMain: TDataModule},
+  ArtistDM in 'ArtistDM.pas' {dmArtist: TDataModule};
 
 {$R *.res}
 
@@ -16,6 +18,7 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TdmMain, dmMain);
   Application.CreateForm(TfrmUpdate, frmUpdate);
   Application.CreateForm(TfrmOptions, frmOptions);
   Application.Run;
