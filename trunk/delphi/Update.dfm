@@ -3,7 +3,7 @@ object frmUpdate: TfrmUpdate
   Top = 0
   Caption = 'Update Database'
   ClientHeight = 380
-  ClientWidth = 590
+  ClientWidth = 609
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,6 +13,9 @@ object frmUpdate: TfrmUpdate
   OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  DesignSize = (
+    609
+    380)
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -29,6 +32,14 @@ object frmUpdate: TfrmUpdate
     Height = 13
     Caption = 'Folder'
   end
+  object Label3: TLabel
+    Left = 8
+    Top = 359
+    Width = 243
+    Height = 13
+    Anchors = [akLeft, akBottom]
+    Caption = 'Use control to multi-select and right click to options'
+  end
   object Button1: TButton
     Left = 8
     Top = 49
@@ -41,17 +52,18 @@ object frmUpdate: TfrmUpdate
   object Memo1: TMemo
     Left = 8
     Top = 80
-    Width = 574
+    Width = 593
     Height = 63
     TabOrder = 1
   end
   object DBGrid1: TDBGrid
     Left = 8
     Top = 172
-    Width = 574
-    Height = 190
+    Width = 593
+    Height = 185
     Ctl3D = False
     DataSource = DataSource1
+    DefaultDrawing = False
     Options = [dgEditing, dgAlwaysShowEditor, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
     ParentCtl3D = False
     PopupMenu = PopupMenu1
@@ -61,12 +73,12 @@ object frmUpdate: TfrmUpdate
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
-    OnEditButtonClick = DBGrid1EditButtonClick
+    OnDrawColumnCell = DBGrid1DrawColumnCell
     Columns = <
       item
         Expanded = False
         FieldName = 'File'
-        Width = 200
+        Width = 300
         Visible = True
       end
       item
@@ -82,7 +94,6 @@ object frmUpdate: TfrmUpdate
         Visible = True
       end
       item
-        ButtonStyle = cbsEllipsis
         Expanded = False
         FieldName = 'Album'
         Width = 120
@@ -102,7 +113,7 @@ object frmUpdate: TfrmUpdate
   object ProgressBar1: TProgressBar
     Left = 100
     Top = 49
-    Width = 482
+    Width = 501
     Height = 25
     Step = 1
     TabOrder = 3
@@ -140,7 +151,7 @@ object frmUpdate: TfrmUpdate
       'select * from options')
     Params = <>
     Left = 152
-    Top = 91
+    Top = 87
     object qryOptionsid: TIntegerField
       FieldName = 'id'
     end
@@ -180,19 +191,24 @@ object frmUpdate: TfrmUpdate
       item
         Name = 'Track'
         DataType = ftInteger
+      end
+      item
+        Name = 'ArtistOk'
+        DataType = ftBoolean
       end>
     IndexDefs = <>
     Params = <>
     StoreDefs = True
+    BeforePost = ClientDataSet1BeforePost
     Left = 152
     Top = 189
     Data = {
-      9D0000009619E0BD0100000018000000060000000000030000009D000446696C
+      AE0000009619E0BD010000001800000007000000000003000000AE000446696C
       650200490000000100055749445448020002009001055469746C650100490000
       0001000557494454480200020032000641727469737401004900000001000557
       4944544802000200320005416C62756D01004900000001000557494454480200
-      020032000459656172040001000000000005547261636B040001000000000000
-      00}
+      020032000459656172040001000000000005547261636B040001000000000008
+      4172746973744F6B02000300000000000000}
     object ClientDataSet1File: TStringField
       FieldName = 'File'
       Size = 400
@@ -215,6 +231,9 @@ object frmUpdate: TfrmUpdate
     object ClientDataSet1Track: TIntegerField
       FieldName = 'Track'
     end
+    object ClientDataSet1ArtistOk: TBooleanField
+      FieldName = 'ArtistOk'
+    end
   end
   object DataSource1: TDataSource
     DataSet = ClientDataSet1
@@ -222,7 +241,7 @@ object frmUpdate: TfrmUpdate
     Top = 241
   end
   object PopupMenu1: TPopupMenu
-    Left = 252
+    Left = 280
     Top = 241
     object S1: TMenuItem
       Caption = 'Same Artist and Album'
@@ -263,12 +282,56 @@ object frmUpdate: TfrmUpdate
     Left = 396
     Top = 236
   end
-  object qryFiles: TZQuery
+  object qryFiles: TZReadOnlyQuery
     Connection = frmMain.ZConnection1
     SQL.Strings = (
       'select path from file order by path')
     Params = <>
     Left = 396
     Top = 188
+  end
+  object qryFileUpd: TZQuery
+    Connection = frmMain.ZConnection1
+    SQL.Strings = (
+      'select * from file where id = 0')
+    Params = <>
+    Left = 460
+    Top = 188
+    object qryFileUpdid: TIntegerField
+      FieldName = 'id'
+    end
+    object qryFileUpdpath: TStringField
+      FieldName = 'path'
+      Size = 400
+    end
+    object qryFileUpdtitle: TStringField
+      FieldName = 'title'
+      Size = 50
+    end
+    object qryFileUpdid_artist: TIntegerField
+      FieldName = 'id_artist'
+    end
+    object qryFileUpdalbum: TStringField
+      FieldName = 'album'
+      Size = 50
+    end
+    object qryFileUpdyear: TIntegerField
+      FieldName = 'year'
+    end
+    object qryFileUpdtrack: TIntegerField
+      FieldName = 'track'
+    end
+  end
+  object dspFileUpd: TDataSetProvider
+    DataSet = qryFileUpd
+    Left = 460
+    Top = 236
+  end
+  object cdsFileUpd: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspFileUpd'
+    Left = 460
+    Top = 284
   end
 end

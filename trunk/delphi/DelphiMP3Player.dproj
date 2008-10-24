@@ -40,6 +40,11 @@
       
       
       
+      
+      
+      
+      
+      
       <Excluded_Packages Name="$(BDS)\bin\dclofficexp100.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
     </Excluded_Packages><Source><Source Name="MainSource">DelphiMP3Player.dpr</Source></Source></Delphi.Personality></BorlandProject></BorlandProject>
   </ProjectExtensions>
@@ -65,8 +70,8 @@
     <DCCReference Include="Options.pas">
       <Form>frmOptions</Form>
     </DCCReference>
-    <DCCReference Include="SelectAlbum.pas">
-      <Form>frmGetAlbum</Form>
+    <DCCReference Include="SelectFiles.pas">
+      <Form>frmSelectFile</Form>
     </DCCReference>
     <DCCReference Include="Update.pas">
       <Form>frmUpdate</Form>
