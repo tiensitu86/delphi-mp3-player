@@ -9,7 +9,6 @@ uses
 
 type
   TfrmSelectFile = class(TForm)
-    DBLookupComboBox1: TDBLookupComboBox;
     dsArtists: TDataSource;
     Label1: TLabel;
     Label2: TLabel;
@@ -29,12 +28,17 @@ type
     qrySongsid_artist: TIntegerField;
     qrySongsid: TIntegerField;
     qrySongspath: TStringField;
+    qryArtists: TZReadOnlyQuery;
+    DBLookupListBox1: TDBLookupListBox;
+    qryArtistsid: TIntegerField;
+    qryArtistsname: TStringField;
+    Edit1: TEdit;
+    Label4: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure DBGrid2DblClick(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
+    procedure Edit1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DBLookupListBox1Click(Sender: TObject);
+    procedure qryAlbumsBeforeOpen(DataSet: TDataSet);
   end;
 
 var
@@ -42,24 +46,44 @@ var
 
 implementation
 
-uses ArtistDM, FileSearch, Main;
+uses FileSearch, Main;
 
 {$R *.dfm}
 
 procedure TfrmSelectFile.DBGrid2DblClick(Sender: TObject);
 begin
   frmMain.AddFile(qrySongspath.Value,
-    DBLookupComboBox1.Text + ' - ' + qrySongstitle.Value, qrySongsid.AsString);
+    qryArtistsname.Value + ' - ' + qrySongstitle.Value, qrySongsid.AsString);
+end;
+
+procedure TfrmSelectFile.DBLookupListBox1Click(Sender: TObject);
+begin
+  qryAlbums.Close;
+  qryAlbums.Open;
+end;
+
+procedure TfrmSelectFile.Edit1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_RETURN then begin
+    qryArtists.SQL[2] := '''%' + Trim(Edit1.Text) + '%''';
+    qryArtists.Open;
+  end;
 end;
 
 procedure TfrmSelectFile.FormCreate(Sender: TObject);
 begin
-  UseArtistDM;
+  qryArtists.Open;
+  DBLookupListBox1.KeyValue := qryArtistsid.Value;
   qryAlbums.Open;
   qrySongs.Open;
-  DBLookupComboBox1.KeyValue := dmArtist.cdsArtistsid.Value;
   DBGrid1.Anchors := DBGrid1.Anchors + [akBottom];
   DBGrid2.Anchors := DBGrid2.Anchors + [akRight, akBottom];
+end;
+
+procedure TfrmSelectFile.qryAlbumsBeforeOpen(DataSet: TDataSet);
+begin
+  qryAlbums.ParamByName('id_artist').Value := DBLookupListBox1.KeyValue;
 end;
 
 end.
