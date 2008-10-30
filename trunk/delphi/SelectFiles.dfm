@@ -16,14 +16,14 @@ object frmSelectFile: TfrmSelectFile
   TextHeight = 13
   object Label1: TLabel
     Left = 12
-    Top = 12
-    Width = 26
+    Top = 13
+    Width = 49
     Height = 13
-    Caption = 'Artist'
+    Caption = 'Artists like'
   end
   object Label2: TLabel
     Left = 12
-    Top = 56
+    Top = 188
     Width = 34
     Height = 13
     Caption = 'Albums'
@@ -35,28 +35,23 @@ object frmSelectFile: TfrmSelectFile
     Height = 13
     Caption = 'Songs'
   end
-  object DBLookupComboBox1: TDBLookupComboBox
+  object Label4: TLabel
     Left = 12
-    Top = 27
-    Width = 217
-    Height = 19
-    Ctl3D = False
-    KeyField = 'id'
-    ListField = 'name'
-    ListSource = dsArtists
-    ParentCtl3D = False
-    TabOrder = 0
+    Top = 50
+    Width = 31
+    Height = 13
+    Caption = 'Artists'
   end
   object DBGrid1: TDBGrid
     Left = 12
-    Top = 71
+    Top = 204
     Width = 217
-    Height = 298
+    Height = 165
     Ctl3D = False
     DataSource = dsAlbums
     Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
     ParentCtl3D = False
-    TabOrder = 1
+    TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -11
@@ -79,14 +74,14 @@ object frmSelectFile: TfrmSelectFile
   end
   object DBGrid2: TDBGrid
     Left = 240
-    Top = 27
+    Top = 28
     Width = 320
     Height = 342
     Ctl3D = False
     DataSource = dsSongs
     Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
     ParentCtl3D = False
-    TabOrder = 2
+    TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -11
@@ -108,26 +103,58 @@ object frmSelectFile: TfrmSelectFile
         Visible = True
       end>
   end
+  object DBLookupListBox1: TDBLookupListBox
+    Left = 12
+    Top = 64
+    Width = 217
+    Height = 121
+    KeyField = 'id'
+    ListField = 'name'
+    ListSource = dsArtists
+    TabOrder = 2
+    OnClick = DBLookupListBox1Click
+  end
+  object Edit1: TEdit
+    Left = 12
+    Top = 28
+    Width = 217
+    Height = 21
+    Ctl3D = True
+    ParentCtl3D = False
+    TabOrder = 3
+    OnKeyDown = Edit1KeyDown
+  end
   object dsArtists: TDataSource
-    DataSet = dmArtist.cdsArtists
-    Left = 84
-    Top = 12
+    DataSet = qryArtists
+    Left = 100
+    Top = 92
   end
   object qryAlbums: TZReadOnlyQuery
     Connection = frmMain.ZConnection1
+    BeforeOpen = qryAlbumsBeforeOpen
     SQL.Strings = (
       'select distinct'
       '  a.id, f.album, f.year'
       'from'
       '  file f join artist a on a.id = f.id_artist'
+      'where'
+      '  a.id = :id_artist'
       'order by'
       '  f.year, f.album ')
-    Params = <>
-    MasterFields = 'id'
-    MasterSource = dsArtists
-    LinkedFields = 'id'
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'id_artist'
+        ParamType = ptInput
+      end>
     Left = 84
-    Top = 128
+    Top = 208
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'id_artist'
+        ParamType = ptInput
+      end>
     object qryAlbumsid: TIntegerField
       FieldName = 'id'
     end
@@ -142,7 +169,7 @@ object frmSelectFile: TfrmSelectFile
   object dsAlbums: TDataSource
     DataSet = qryAlbums
     Left = 84
-    Top = 176
+    Top = 256
   end
   object qrySongs: TZReadOnlyQuery
     Connection = frmMain.ZConnection1
@@ -190,5 +217,23 @@ object frmSelectFile: TfrmSelectFile
     DataSet = qrySongs
     Left = 384
     Top = 144
+  end
+  object qryArtists: TZReadOnlyQuery
+    Connection = frmMain.ZConnection1
+    SQL.Strings = (
+      'select * from artist'
+      'where name like'
+      #39'%'#39
+      'order by name ')
+    Params = <>
+    Left = 100
+    Top = 44
+    object qryArtistsid: TIntegerField
+      FieldName = 'id'
+    end
+    object qryArtistsname: TStringField
+      FieldName = 'name'
+      Size = 50
+    end
   end
 end
