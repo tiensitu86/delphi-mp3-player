@@ -176,7 +176,8 @@ begin
     if id_artist > 0 then
       qryFileUpdid_artist.Value := id_artist;
     qryFileUpdalbum.Value := ClientDataSet1Album.Value;
-    qryFileUpdyear.Value := ClientDataSet1Year.Value;
+    if ClientDataSet1Year.Value > 0 then
+      qryFileUpdyear.Value := ClientDataSet1Year.Value;
     qryFileUpdtrack.Value := ClientDataSet1Track.Value;
     qryFileUpd.Post;
 
@@ -196,7 +197,11 @@ begin
       ClientDataSet1Title.Value    := Title;
       ClientDataSet1Artist.Value   := Artist;
       ClientDataSet1Album.Value    := Album;
-      ClientDataSet1Year.AsString  := Year;
+      try
+        if StrToInt(Year) > 0 then
+          ClientDataSet1Year.AsString  := Year;
+      except
+      end;
       ClientDataSet1Track.AsString := Track;
     end;
   except
@@ -259,7 +264,8 @@ begin
       ClientDataSet1.Edit;
       ClientDataSet1Artist.Value := Artist;
       ClientDataSet1Album.Value := Album;
-      ClientDataSet1Year.Value := Year;
+      if Year > 0 then
+        ClientDataSet1Year.Value := Year;
       ClientDataSet1.Post;
     end;
     ClientDataSet1.GotoBookmark(pointer(DBGrid1.SelectedRows.Items[0]));

@@ -49,7 +49,7 @@ object frmSelectFile: TfrmSelectFile
     Height = 165
     Ctl3D = False
     DataSource = dsAlbums
-    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
     ParentCtl3D = False
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
@@ -164,6 +164,7 @@ object frmSelectFile: TfrmSelectFile
     end
     object qryAlbumsyear: TIntegerField
       FieldName = 'year'
+      DisplayFormat = '; ; '
     end
   end
   object dsAlbums: TDataSource
@@ -197,6 +198,7 @@ object frmSelectFile: TfrmSelectFile
     end
     object qrySongstrack: TIntegerField
       FieldName = 'track'
+      DisplayFormat = '; ; '
     end
     object qrySongsalbum: TStringField
       FieldName = 'album'
