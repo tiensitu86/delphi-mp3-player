@@ -21,3 +21,7 @@
    * [http://www.sqlite.org/ SQLite]
    * [http://zeos.firmos.at/portal.php ZeosLib Portal]
    * [http://sourceforge.net/projects/zeoslib ZeosLib SourceForge]
+
+== Other projects ==
+
+ * [http://www.planet-source-code.com/vb/scripts/ShowCode.asp?txtCodeId=1741&lngWId=7 3Amp3]
